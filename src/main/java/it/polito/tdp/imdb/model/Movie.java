@@ -1,12 +1,13 @@
 package it.polito.tdp.imdb.model;
 
-public class Movie {
-	Integer id;
-	String name;
-	Integer year;
-	Double rank;
+public class Movie implements Comparable<Movie>{
+	private Integer id;
+	private String name;
+	private Integer year;
+	private Double rank;
+
 	
-	public Movie(Integer id, String name, Integer year, Double rank) {
+	public Movie (Integer id, String name, Integer year, Double rank) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,6 +46,7 @@ public class Movie {
 	public void setRank(Double rank) {
 		this.rank = rank;
 	}
+	
 
 	@Override
 	public String toString() {
@@ -74,6 +76,12 @@ public class Movie {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Movie o) {
+		// TODO Auto-generated method stub
+		return this.name.compareTo(o.getName());
 	}
 	
 	

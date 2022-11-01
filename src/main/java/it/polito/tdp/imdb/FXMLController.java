@@ -5,9 +5,12 @@
 package it.polito.tdp.imdb;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.imdb.model.Model;
+import it.polito.tdp.imdb.model.Movie;
+import it.polito.tdp.imdb.model.MoviePesato;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,7 +41,7 @@ public class FXMLController {
     private TextField txtRank; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbMovie"
-    private ComboBox<?> cmbMovie; // Value injected by FXMLLoader
+    private ComboBox<Movie> cmbMovie; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -51,10 +54,44 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	
+    	txtResult.clear();
+    	
+    	String t = txtRank.getText();
+    	double rank;
+    	if(t == null) {
+    		txtResult.appendText("Errore: inserire un rank");
+    		return;
+    	}
+    	
+    	try {
+    		rank = Double.parseDouble(t);
+    	}catch (NumberFormatException e) {
+    		txtResult.appendText("Inserire un valore double di rank");
+    		return;
+    	}
+    	
+    	if(rank < 0.0 || rank > 10.0) {
+    		txtResult.appendText("Errore: il range del rank va da 0.0 a 10.0");
+    		return;
+    	}
+    	String msg = this.model.creaGrafo(rank);
+    	txtResult.appendText(msg);
+    	
+    	this.cmbMovie.getItems().addAll(this.model.getAllMovies());
+    	
     }
 
     @FXML
     void doGradoMax(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	
+    	List<MoviePesato> lista = this.model.getPesoMassimo();
+    	
+    	txtResult.appendText("FILM DI GRADO MASSIMO: \n");
+    	for(MoviePesato m: lista) {
+    		txtResult.appendText(m.toString()+"\n");
+    	}
     	
     }
 
